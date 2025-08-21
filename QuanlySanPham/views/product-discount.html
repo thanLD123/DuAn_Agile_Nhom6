@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Giảm giá sản phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+</head>
+<body>
+
+<div class="bg-white min-vh-100">
+    <div class="" layout:fragment="content">
+
+        <style>
+            /* Tổng thể trắng sáng hiện đại */
+            .bg-white {
+                background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+            }
+
+            /* Tiêu đề */
+            h2.mt-3 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #333;
+                position: relative;
+                margin-bottom: 1.5rem;
+                animation: slideIn 0.6s ease-out;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            /* Breadcrumb */
+            .breadcrumb {
+                background-color: transparent;
+                font-weight: 500;
+                animation: fadeIn 1s ease;
+            }
+
+            .breadcrumb-item a {
+                color: #007bff;
+                transition: color 0.3s;
+            }
+
+            .breadcrumb-item a:hover {
+                color: #0056b3;
+            }
+
+            /* Nút "Tạo giảm giá +" */
+            .btn-success {
+                font-size: 1.1rem;
+                padding: 12px 28px;
+                font-weight: 600;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #00c6ff, #0072ff);
+                border: none;
+                transition: all 0.4s ease;
+                box-shadow: 0 4px 14px rgba(0, 114, 255, 0.3);
+            }
+
+            .btn-success:hover {
+                transform: scale(1.05);
+                background: linear-gradient(135deg, #0072ff, #00c6ff);
+                box-shadow: 0 6px 20px rgba(0, 114, 255, 0.5);
+            }
+
+            /* Bảng sản phẩm */
+            .table {
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                animation: fadeInUp 0.7s ease;
+            }
+
+            .table thead {
+                background: #343a40;
+                color: #fff;
+            }
+
+            .table th {
+                vertical-align: middle;
+                text-align: center;
+                font-weight: 600;
+                font-size: 0.95rem;
+                letter-spacing: 0.5px;
+            }
+
+            .table td {
+                vertical-align: middle;
+                text-align: center;
+                font-size: 0.95rem;
+                padding: 0.75rem;
+            }
+
+            /* Hiệu ứng cho hàng bảng */
+            .table tbody tr {
+                transition: background-color 0.3s ease;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f1f9ff;
+            }
+
+            /* Badge trạng thái */
+            .badge-success, .badge-danger {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+                border-radius: 12px;
+                font-weight: 500;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+
+            /* Nút mở/đóng giảm giá */
+            .btn-outline-danger, .btn-outline-success {
+                font-size: 0.9rem;
+                padding: 6px 14px;
+                font-weight: 600;
+                border-radius: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+
+            .btn-outline-danger:hover {
+                background-color: #dc3545;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+            .btn-outline-success:hover {
+                background-color: #28a745;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+            /* Hiệu ứng chung */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            /* Tiêu đề neon phát sáng */
+            h2.mt-3 {
+                font-size: 2rem;
+                font-weight: bold;
+                color: #007BFF;
+                text-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+                position: relative;
+                margin-bottom: 1.5rem;
+                animation: neonPulse 1.5s infinite alternate;
+            }
+
+            @keyframes neonPulse {
+                0% {
+                    text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+                }
+                100% {
+                    text-shadow: 0 0 20px rgba(0, 123, 255, 1);
+                }
+            }
+
+            /* Các thẻ <td> hiệu ứng chữ */
+            .table td span, .table td {
+                transition: all 0.3s ease-in-out;
+                cursor: default;
+            }
+
+            /* Hover chữ nhảy nhẹ + đổi màu */
+            .table td:hover span {
+                color: #007bff;
+                transform: scale(1.05);
+                text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+
+            /* Hiệu ứng xuất hiện từng dòng */
+            .table tbody tr {
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInRow 0.5s ease forwards;
+                animation-delay: calc(var(--delay, 0) * 0.1s);
+            }
+
+            .table tbody tr:nth-child(1) { --delay: 1; }
+            .table tbody tr:nth-child(2) { --delay: 2; }
+            .table tbody tr:nth-child(3) { --delay: 3; }
+            /* … tiếp tục nếu muốn thêm nhiều dòng */
+
+            @keyframes fadeInRow {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Badge hoạt động/đã đóng đổi nội dung khi hover */
+            .badge-success, .badge-danger {
+                position: relative;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .badge-success::after,
+            .badge-danger::after {
+                content: attr(data-hover-text);
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+                color: #fff;
+                background-color: #000;
+                padding: 3px 10px;
+                border-radius: 12px;
+                white-space: nowrap;
+                transform: scale(0.9);
+                transition: all 0.3s ease;
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            .badge-success:hover::after,
+            .badge-danger:hover::after {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            /* Thêm style cho badge để dễ nhìn */
+            .badge-success {
+                background: linear-gradient(135deg, #28a745, #218838);
+            }
+            .badge-danger {
+                background: linear-gradient(135deg, #dc3545, #c82333);
+            }
+
+            /* Nút action hover glow */
+            .btn-outline-danger:hover,
+            .btn-outline-success:hover {
+                box-shadow: 0 0 12px rgba(0,0,0,0.2), 0 0 8px #fff;
+            }
+
+            /* Chữ breadcrumb hover đổi màu */
+            .breadcrumb-item a:hover {
+                color: #17a2b8;
+                text-decoration: underline;
+            }
+
+            /* Container label style */
+            label {
+                font-weight: 600;
+                font-size: 1rem;
+                color: #333;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                animation: fadeInLabel 0.5s ease-in-out;
+            }
+
+            /* Hiệu ứng vào cho label */
+            @keyframes fadeInLabel {
+                from {
+                    opacity: 0;
+                    transform: translateX(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            /* Style cho input tìm kiếm */
+            label input[type="search"].form-control-sm {
+                padding: 0.4rem 0.8rem;
+                border-radius: 20px;
+                border: 2px solid #ced4da;
+                transition: all 0.3s ease;
+                box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+                font-size: 0.9rem;
+                width: 220px;
+            }
+
+            /* Hover và Focus – hiệu ứng ánh sáng */
+            label input[type="search"].form-control-sm:hover,
+            label input[type="search"].form-control-sm:focus {
+                border-color: #007BFF;
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                outline: none;
+                background-color: #f9f9ff;
+                transform: scale(1.02);
+            }
+
+            /* Placeholder */
+            label input[type="search"]::placeholder {
+                color: #aaa;
+                transition: color 0.3s ease;
+            }
+            label input[type="search"]:focus::placeholder {
+                color: #007BFF;
+            }
+
+            /* Đảm bảo ô tìm kiếm nằm dưới nút tạo mã */
+            .dataTables_filter {
+                margin-top: 1rem !important;
+                display: flex;
+                justify-content: flex-end;
+            }
+            /* Label chữ "Tìm kiếm" hiện đại + hiệu ứng chữ */
+            label {
+                font-weight: 600;
+                font-size: 1rem;
+                color: #007BFF;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                position: relative;
+                animation: pulseText 1s ease-in-out;
+            }
+
+            /* Hiệu ứng chữ “Tìm kiếm” mượt */
+            @keyframes pulseText {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-5px);
+                    color: #aaa;
+                }
+                50% {
+                    opacity: 1;
+                    transform: translateY(2px);
+                    color: #00bfff;
+                }
+                100% {
+                    color: #007BFF;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Tổng thể pagination */
+            ul.pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 1.5rem;
+                gap: 8px;
+            }
+
+            /* Từng nút trong phân trang */
+            ul.pagination li.page-item {
+                transition: all 0.3s ease;
+            }
+
+            /* Link trong nút */
+            ul.pagination li.page-item .page-link {
+                padding: 8px 14px;
+                border-radius: 50px;
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                color: #007BFF;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+
+            /* Hover */
+            ul.pagination li.page-item .page-link:hover {
+                background-color: #007BFF;
+                color: #fff;
+                transform: translateY(-2px);
+            }
+
+            /* Nút đang active */
+            ul.pagination li.page-item.active .page-link {
+                background-color: #007BFF;
+                color: white;
+                font-weight: bold;
+                box-shadow: 0 0 10px rgba(0,123,255,0.4);
+                transform: scale(1.05);
+            }
+
+            /* Nút disabled */
+            ul.pagination li.page-item.disabled .page-link {
+                background-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+                pointer-events: none;
+                opacity: 0.6;
+            }
+
+            /* Styling thông tin phân trang */
+            #myTable_info {
+                font-size: 1rem;
+                font-weight: 500;
+                color: #495057;
+                background: linear-gradient(to right, #e3f2fd, #e1f5fe);
+                padding: 10px 20px;
+                border-radius: 12px;
+                display: inline-block;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                animation: fadeSlideIn 0.6s ease-out;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Hiệu ứng xuất hiện */
+            @keyframes fadeSlideIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Hover đẹp thêm nếu bạn muốn */
+            #myTable_info:hover {
+                background: linear-gradient(to right, #bbdefb, #b2ebf2);
+                transform: scale(1.03);
+            }
+
+
+        </style>
+
+
+        <div class="section bg-white px-3 py-3 min-vh-100">
+            <h2 class="mt-3">Quản lý giảm giá sản phẩm</h2>
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Giảm giá sản phẩm</li>
+                </ol>
+            </nav>
+            <div class="d-flex flex-row-reverse">
+                <a th:href="@{/admin-only/product-discount-create}" class="btn btn-success">Tạo giảm giá +</a>
+            </div>
+            <div class="alert alert-success" th:if="${message != null}" th:text="${message}"></div>
+
+            <div class="mt-3">
+
+                <table id="myTable" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Mã SP</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Màu</th>
+                        <th>Cỡ</th>
+                        <th>Giá gốc</th>
+                        <th>Giá giảm</th>
+                        <th>Thời gian áp dụng</th>
+                        <th>Thời gian kết thúc</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="discount : ${productDiscounts}">
+                        <td><span th:text="${discount.productDetail.product.code}"></span></td>
+                        <td><span th:text="${discount.productDetail.product.name}"></span></td>
+                        <td><span th:text="${discount.productDetail.color.name}"></span></td>
+                        <td><span th:text="${discount.productDetail.size.name}"></span></td>
+                        <td><span th:text="${#numbers.formatDecimal(discount.productDetail.price, 0, 'POINT', 0, 'COMMA')}"></span></td>
+                        <td><span th:text="${#numbers.formatDecimal(discount.discountedAmount, 0, 'POINT', 0, 'COMMA')}"></span></td>
+                        <td><span th:text="${#dates.format(discount.startDate, 'dd/MM/yyyy')}"></span></td>
+                        <td><span th:text="${#dates.format(discount.endDate, 'dd/MM/yyyy')}"></span></td>
+                        <td>
+                            <span th:if="${discount.closed}" class="badge badge-danger">Đã đóng</span>
+                            <span th:if="${!discount.closed}" class="badge badge-success">Hoạt động</span>
+                        </td>
+                        <td>
+                            <button th:if="${!discount.closed}" th:data-close-id="${discount.id}" class="close-discount-btn btn btn-outline-danger rounded">Đóng</button>
+                            <button th:if="${discount.closed}" th:data-open-id="${discount.id}" class="open-discount-btn btn btn-outline-success rounded">Mở</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script th:inline="javascript">
+            $(document).ready(function () {
+                // Initialize DataTable
+                new DataTable('#myTable', {
+                    order: [],
+                    lengthChange: false,
+                    language: {
+                        search: "Tìm kiếm:",
+                        zeroRecords: "Không tìm thấy bản ghi nào",
+                        info: "Hiển thị trang _PAGE_ trong _PAGES_",
+                        paginate: {
+                            first: "<<",
+                            last: ">>",
+                            next: ">",
+                            previous: "<"
+                        },
+                    }
+                });
+
+                // // Thiết lập sự kiện cho nút Lọc
+                // $('#filterBtn').on('click', function () {
+                //     var color = $('#colorFilter').val();
+                //     var size = $('#sizeFilter').val();
+                //     var url = `/admin-only/product-discount?color=${encodeURIComponent(color)}&size=${encodeURIComponent(size)}`;
+                //     window.location.href = url; // Điều hướng đến URL có tham số lọc
+                // });
+                // // Sự kiện cho nút Hủy
+                // $('#resetBtn').on('click', function () {
+                //     // Xóa giá trị trong các ô input lọc
+                //     $('#colorFilter').val('');
+                //     $('#sizeFilter').val('');
+                //
+                //     // Điều hướng về trang không có tham số lọc
+                //     window.location.href = '/admin-only/product-discount';
+                // });
+                // Thiết lập sự kiện cho các nút Đóng/Mở giảm giá
+                setEvent();
+                function setEvent() {
+                    // Sự kiện đóng giảm giá
+                    $('#myTable').on('click', '.close-discount-btn', function () {
+                        var closeId = $(this).attr('data-close-id');
+                        Swal.fire({
+                            title: 'Đóng giảm giá',
+                            text: 'Bạn chắc chắn muốn đóng giảm giá này',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Xác nhận',
+                            cancelButtonText: 'Hủy'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                await $.ajax({
+                                    type: 'POST',
+                                    url: `/api/private/product-discount/${closeId}/status/true`,
+                                    dataType: 'json',
+                                    success: async function () {
+                                        Toastify({
+                                            text: "Đóng giảm giá thành công",
+                                            className: "success",
+                                            style: {
+                                                background: "green",
+                                            }
+                                        }).showToast();
+                                        updateRow(closeId, 'closed');
+                                    },
+                                    error: function (xhr, status, error) {
+                                        Swal.fire("Error", xhr.responseJSON.message, "error");
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                    // Sự kiện mở giảm giá
+                    $('#myTable').on('click', '.open-discount-btn', function () {
+                        var openId = $(this).attr('data-open-id');
+                        Swal.fire({
+                            title: 'Mở giảm giá',
+                            text: 'Bạn chắc chắn muốn mở giảm giá này',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Xác nhận',
+                            cancelButtonText: 'Hủy'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                await $.ajax({
+                                    type: 'POST',
+                                    url: `/api/private/product-discount/${openId}/status/false`,
+                                    dataType: 'json',
+                                    success: async function () {
+                                        Toastify({
+                                            text: "Mở giảm giá thành công",
+                                            className: "success",
+                                            style: {
+                                                background: "green",
+                                            }
+                                        }).showToast();
+                                        updateRow(openId, 'active');
+                                    },
+                                    error: function (xhr, status, error) {
+                                        Swal.fire("Error", xhr.responseJSON.message, "error");
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+
+                function updateRow(id, status) {
+                    var row = $(`button[data-close-id="${id}"], button[data-open-id="${id}"]`).closest('tr');
+                    if (status === 'closed') {
+                        row.find('.badge-success').removeClass('badge-success').addClass('badge-danger').text('Đã đóng');
+                        row.find('.close-discount-btn').replaceWith(`<button data-open-id="${id}" class="open-discount-btn btn btn-outline-success rounded">Mở</button>`);
+                    } else {
+                        row.find('.badge-danger').removeClass('badge-danger').addClass('badge-success').text('Hoạt động');
+                        row.find('.open-discount-btn').replaceWith(`<button data-close-id="${id}" class="close-discount-btn btn btn-outline-danger rounded">Đóng</button>`);
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
+
+</body>
+</html>
