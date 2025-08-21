@@ -1,0 +1,879 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <style>
+
+
+
+
+
+
+
+
+
+
+
+
+        /*.step.active {*/
+        /*    color: #28a745;*/
+        /*}*/
+
+        /*.step .icon {*/
+        /*    margin-right: 10px;*/
+        /*    font-size: 24px;*/
+        /*}*/
+
+        /*.text-danger {*/
+        /*    color: red;*/
+        /*    font-weight: bold;*/
+        /*    border: 1px solid red;*/
+        /*    border-radius: 5px;*/
+        /*    padding: 10px;*/
+        /*    text-align: center;*/
+        /*}*/
+
+        /*.text-muted {*/
+        /*    color: #6c757d;*/
+        /*}*/
+
+        /*.table {*/
+        /*    width: 100%;*/
+        /*    border-collapse: collapse;*/
+        /*    margin-top: 20px;*/
+        /*}*/
+
+        /*.table th,*/
+        /*.table td {*/
+        /*    padding: 12px;*/
+        /*    border: 1px solid #dee2e6;*/
+        /*    text-align: left;*/
+        /*}*/
+
+        /*.table th {*/
+        /*    background-color: #f1f1f1;*/
+        /*}*/
+
+        /*.btn {*/
+        /*    padding: 10px 15px;*/
+        /*    border: none;*/
+        /*    border-radius: 5px;*/
+        /*    cursor: pointer;*/
+        /*}*/
+
+        /*.btn-success {*/
+        /*    background-color: #28a745;*/
+        /*    color: white;*/
+        /*}*/
+
+        /*.btn-danger {*/
+        /*    background-color: #dc3545;*/
+        /*    color: white;*/
+        /*}*/
+
+        /*.btn-secondary {*/
+        /*    background-color: #6c757d;*/
+        /*    color: white;*/
+        /*}*/
+
+        /*.btn-primary {*/
+        /*    background-color: #007bff;*/
+        /*    color: white;*/
+        /*}*/
+
+        /*.btn-warning {*/
+        /*    background-color: #ffc107;*/
+        /*    color: white;*/
+        /*}*/
+
+        /*.btn:hover {*/
+        /*    opacity: 0.9;*/
+        /*}*/
+
+        /*.float-end {*/
+        /*    float: right;*/
+        /*}*/
+
+        /*.mt-4 {*/
+        /*    margin-top: 1.5rem;*/
+        /*}*/
+
+        /*.mb-4 {*/
+        /*    margin-bottom: 1.5rem;*/
+        /*}*/
+
+        /*.text-end {*/
+        /*    text-align: end;*/
+        /*}*/
+
+        /*.text-warning {*/
+        /*    color: #ffc107;*/
+        /*}*/
+
+        /*.text-truncate {*/
+        /*    white-space: nowrap;*/
+        /*    overflow: hidden;*/
+        /*    text-overflow: ellipsis;*/
+        /*}*/
+        /* General Styles */
+        /* General Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .card .step.active .icon {
+            background-color: #ff0000; /* Red to match the image */
+            color: #fff;
+            border-color: #ff0000;
+        }
+
+        .card .step.active .text {
+            color: #ff0000;
+            font-weight: 600;
+        }
+
+        .card .step .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card .step .icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .card .step .text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        /* Cancelled Status */
+        .card .text-danger.border-danger {
+            background-color: #fff3f3;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Customer and Date Info */
+        .card .text-sm-end {
+            text-align: right !important;
+        }
+
+        .card .font-size-15 {
+            font-size: 0.95rem !important;
+        }
+
+        .card .font-size-16 {
+            font-size: 1.1rem !important;
+        }
+
+        /* Voucher Section */
+        .card .voucher-section {
+            background-color: #f1f3f5;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .card .voucher-name {
+            font-weight: 600;
+            color: #1a73e8;
+        }
+
+        /* Order Type and Transaction Code */
+        .card .loai-don-wrapper h2,
+        .card .ma-giao-dich-wrapper {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .card .loai-hoadon {
+            font-size: 1rem;
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .card .text-warning {
+            color: #ffc107 !important;
+        }
+
+        /* Table Styling */
+        .card .table-responsive {
+            margin-top: 20px;
+        }
+
+        .card .table {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .card .table th {
+            background-color: #f1f3f5;
+            color: #333;
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .card .table td {
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .card .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .card .text-end {
+            text-align: right !important;
+        }
+
+        .card .fw-semibold {
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .card .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .card .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .card .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .card .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .card .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .card .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .card .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        .card .btn-primary {
+            background-color: #1a73e8;
+            border-color: #1a73e8;
+        }
+
+        .card .btn-primary:hover {
+            background-color: #1668c7;
+            border-color: #155cbb;
+        }
+
+        .card .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #333;
+        }
+
+        .card .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        /* Print and Close Buttons */
+        .card .float-end .btn {
+            margin-left: 10px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .card .track {
+                justify-content: center;
+            }
+
+            .card .step {
+                min-width: 80px;
+            }
+
+            .card .step .text {
+                font-size: 0.75rem;
+            }
+
+            .card .text-sm-end {
+                text-align: left !important;
+                margin-top: 15px;
+            }
+
+            .card .float-end {
+                float: none !important;
+                text-align: center;
+            }
+
+            .card .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" style="position: relative">
+                    <div class="card-body">
+                        <div class="invoice-title">
+                            <!--                            <h4 class="float-end font-size-15"><span class="badge bg-success font-size-12 ms-2" th:text="${billdetail.trangThaiDonHang}"></span></h4>-->
+                            <div class="float-end mr-4">
+                                <!-- Add class 'active' to progress -->
+                                <div class="track"
+                                     th:if="${ billdetail.trangThaiDonHang != T(com.example.demo.entities.enumClass.BillStatus).HUY}">
+                                    <!-- Step 1: Chờ xác nhận -->
+                                    <div class="step"
+                                         th:classappend="${
+                 (billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_XAC_NHAN ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_GIAO_HANG ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_LAY_HANG ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).THAT_BAI ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).HOAN_THANH ? 'active' : 'd-none')}">
+            <span class="icon">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
+                    <path fill="currentColor" d="M232 136.66A104.12...Z"/>
+                </svg>
+            </span>
+                                        <span class="text">Chờ xác nhận</span>
+                                    </div>
+
+                                    <!-- Step 2: Chờ hàng về -->
+                                    <div class="step"
+                                         th:classappend="${
+                                         billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_HANG_VE  ? 'active' : 'd-none'}"
+                                    >
+            <span class="icon">
+                <svg class="w-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ffffff" d="M383.5 192c.3-5.3 .5-10.6 .5-16c0-51-15.9-96-40.2-127.6C319.5 16.9 288.2 0 256 0s-63.5 16.9-87.8 48.4C143.9 80 128 125 128 176c0 5.4 .2 10.7 .5 16L240 192l0 128-32 0c-7 0-13.7 1.5-19.7 4.2L68.2 192l28.3 0c-.3-5.3-.5-10.6-.5-16c0-64 22.2-121.2 57.1-159.3C62 49.3 18.6 122.6 4.2 173.6C1.5 183.1 9 192 18.9 192l6 0L165.2 346.3c-3.3 6.5-5.2 13.9-5.2 21.7l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96c0-7.8-1.9-15.2-5.2-21.7L487.1 192l6 0c9.9 0 17.4-8.9 14.7-18.4C493.4 122.6 450 49.3 358.9 16.7C393.8 54.8 416 112.1 416 176c0 5.4-.2 10.7-.5 16l28.3 0L323.7 324.2c-6-2.7-12.7-4.2-19.7-4.2l-32 0 0-128 111.5 0z"/></svg>            </span>
+                                        <span class="text">Chờ hàng về</span>
+                                    </div>
+
+                                    <!-- Step 3: Chờ lấy hàng -->
+                                    <div class="step"
+                                         th:classappend="${
+                         billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_GIAO_HANG ||
+                         billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_LAY_HANG ||
+                         billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).THAT_BAI ||
+                         billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).HOAN_THANH ? 'active' : ''}">
+                    <span class="icon">
+                        <!-- Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <g fill="none" stroke-width="1.5">
+                                <path fill="currentColor"
+                                      d="m2.695 7.185l9 4l.61-1.37l-9-4l-.61 1.37ZM12.75 21.5v-11h-1.5v11h1.5Zm-.445-10.315l9-4l-.61-1.37l-9 4l.61 1.37Z"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      d="M3 17.11V6.89a.6.6 0 0 1 .356-.548l8.4-3.734a.6.6 0 0 1 .488 0l8.4 3.734A.6.6 0 0 1 21 6.89v10.22a.6.6 0 0 1-.356.548l-8.4 3.734a.6.6 0 0 1-.488 0l-8.4-3.734A.6.6 0 0 1 3 17.11Z"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      d="m7.5 4.5l8.644 3.842a.6.6 0 0 1 .356.548v3.61"/>
+                            </g>
+                        </svg>
+                    </span>
+                                        <span class="text">Chờ lấy hàng</span>
+                                    </div>
+
+                                    <!-- Step 4: Chờ giao hàng -->
+                                    <div class="step"
+                                         th:classappend="${
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_GIAO_HANG ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).THAT_BAI ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).HOAN_THANH ? 'active' : ''}">
+            <span class="icon">
+                <!-- Icon -->
+                <i class="fa fa-truck"></i>
+            </span>
+                                        <span class="text">Chờ giao hàng</span>
+                                    </div>
+
+                                    <!-- Step 5: Hoàn thành -->
+                                    <div class="step"
+                                         th:classappend="${
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).THAT_BAI ||
+                 billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).HOAN_THANH ? 'active' : ''}">
+            <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M19 13c.7 0 1.37...Z"/>
+                </svg>
+            </span>
+                                        <span class="text">Hoàn thành</span>
+                                    </div>
+                                </div>
+
+                                <!-- ĐÃ HỦY -->
+                                <div th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).HUY}">
+                                    <div class="text-danger font-weight-bold border rounded p-2 border-danger">
+                                        ĐÃ HỦY
+                                    </div>
+                                </div>
+
+                                <!-- HOÀN TRẢ KHÔNG LÀM -->
+
+                            </div>
+
+                            <div class="mb-4">
+                                <h2 class="mb-1 text-muted">Mã HD: [[${billdetail.maDinhDanh}]]</h2>
+                            </div>
+                            <div class="mb-3">
+                                <h2 class="mb-1 text-muted">POLO HUB</h2>
+                            </div>
+
+                            <div class="text-muted">
+                                <p class="mb-1">Đ/C: Toà Nhà Fpoly Trịnh Văn Bô</p>
+                                <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i>Email: PoloHub@gmail.com</p>
+                                <p><i class="uil uil-phone me-1"></i>SĐT: 19009000-66668888</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4"/>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="text-muted">
+                                    <h5 class="font-size-16 mb-3 mu-aa">Khách hàng:</h5>
+                                    <h5 class="font-size-15 mb-2" th:if="${billdetail.tenKhachHang != null}"
+                                        th:text="${billdetail.tenKhachHang}">
+                                        Preston Miller
+                                    </h5>
+                                    <h6 class="font-size-15 mb-2 font-italic"
+                                        th:if="${billdetail.tenKhachHang == null}">
+                                        Khách lẻ
+                                    </h6>
+                                    <p class="mb-1" th:if="${billdetail.tenKhachHang != null}"
+                                       th:text="${billdetail.diaChi}">
+                                        4068 Post Avenue Newfolden, MN 56738
+                                    </p>
+                                    <p th:if="${billdetail.tenKhachHang != null}"
+                                       th:text="${billdetail.soDienThoai}">
+                                        001-234-5678
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-sm-6">
+                                <div class="text-muted text-sm-end">
+                                    <div class="mt-4">
+                                        <h5 class="font-size-15 mb-1 mu-aa">Ngày mua hàng:</h5>
+                                        <p
+                                                th:text="${#temporals.format(billdetail.createdDate, 'dd-MM-yyyy HH:mm')}">
+                                            25/11/2023
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+
+                        <hr class="my-4"/>
+                        <!-- end row -->
+                        <div class="py-2 mb-4 voucher-section">
+                            <div>
+                                <h5 class="mu-aa">Voucher:</h5>
+                            </div>
+                            <div th:if="${billdetail.voucherName != null}">
+                                <p class="voucher-name" th:text="${billdetail.voucherName}">
+                                </p>
+                                <th:block th:switch="${billdetail.getDiscountType()}">
+                                    <p th:case="2" class="mb-1" th:if="${billdetail.getDiscountAmount() != null}">
+                                            <span>
+                                                Giảm:
+                                            </span>
+                                        <span th:text="${#numbers.formatInteger(billdetail.getDiscountAmount(),3,'POINT') + 'VND'}"></span>
+                                    </p>
+                                    <p th:case="1" class="mb-1" th:if="${billdetail.getDiscountPercent() != null}">
+                                            <span>
+                                                Giảm:
+                                            </span>
+                                        <span th:text="${#numbers.formatInteger(billdetail.getDiscountPercent(),2,'POINT') + '%'}"></span>
+                                    </p>
+                                </th:block>
+
+                                <p class="mb-1" th:if="${billdetail.getDiscountMinimumAmountInCart != null}">
+                                        <span>
+                                            Hóa đơn tối thiểu:
+                                        </span>
+                                    <span th:text="${#numbers.formatInteger(billdetail.getDiscountMinimumAmountInCart(),3,'POINT') + 'VND'}"></span>
+                                </p>
+
+                                <p class="mb-1" th:if="${billdetail.getDiscountMaximumAmount != null}">
+                                            <span>
+                                                Giảm tối đa:
+                                            </span>
+                                    <span th:text="${#numbers.formatInteger(billdetail.getDiscountMaximumAmount(),3,'POINT') + 'VND'}"></span>
+                                </p>
+                                <p class="mb-1" th:if="${billdetail.getDiscountEndDate() != null}">
+                                                <span>
+                                                    Hiệu lực tới:
+                                                </span>
+                                    <span th:text="${#dates.format(billdetail.getDiscountEndDate(),'HH:mm dd-MM-yyyy')}"></span>
+                                </p>
+                                <!--                                    <p class="mb-1" th:if="${billdetail.getDiscountUsage() != null}">-->
+                                <!--                                                    <span>-->
+                                <!--                                                        Số lượng còn lại:-->
+                                <!--                                                    </span>-->
+                                <!--                                        <span th:text="${billdetail.getDiscountUsage()}"></span>-->
+                                <!--                                    </p>-->
+                            </div>
+
+                            <div th:if="${billdetail.voucherName == null}">
+                                <span class="voucher-name">Không sử dụng</span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4"/>
+
+                        <div class="mb-4 loai-don-wrapper">
+                            <div>
+                                <h2 class="mu-aa">📦 Loại đơn :</h2>
+                                <h5 class="loai-hoadon">
+                                        <span
+                                                th:if="${billdetail.loaiHoaDon == T(com.example.demo.entities.enumClass.InvoiceType).OFFLINE}">Tại
+                                            quầy</span>
+                                    <span
+                                            th:if="${billdetail.loaiHoaDon == T(com.example.demo.entities.enumClass.InvoiceType).ONLINE}">Online</span>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 ma-giao-dich-wrapper">
+                            <span>💳 Mã giao dịch: <span class="text-warning font-weight-bold"
+                                                         th:text="${billdetail.maGiaoDich}"></span></span>
+                        </div>
+
+                        <hr class="my-4"/>
+
+                        <div class="py-2">
+                            <h5 class="mu-aa">Danh sách đơn hàng</h5>
+
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap table-centered mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Màu sắc</th>
+                                        <th>Kích cỡ</th>
+                                        <th>Giá tiền</th>
+                                        <th>Số lượng</th>
+                                        <th class="text-end" style="width: 120px">Thành tiền</th>
+                                    </tr>
+                                    </thead>
+                                    <!-- end thead -->
+                                    <tbody>
+                                    <tr th:each="productDetail : ${billDetailProduct}">
+                                        <td th:data-id="${productDetail.id}"
+                                            th:data-quantity="${productDetail.soLuong}">
+                                            <div>
+                                                <h6 class="text-truncate font-size-14 mb-1"
+                                                    th:text="${productDetail.tenSanPham}">
+                                                    Black Strap A012
+                                                </h6>
+                                            </div>
+                                        </td>
+                                        <td th:text="${productDetail.tenMau}"></td>
+                                        <td th:text="${productDetail.kichCo}">$ 245.50</td>
+                                        <td
+                                                th:text="${#numbers.formatDecimal(productDetail.giaTien, 0, 'POINT', 0, 'COMMA')}">
+                                        </td>
+                                        <td th:text="${productDetail.soLuong}"></td>
+                                        <td class="text-end"
+                                            th:text="${#numbers.formatDecimal(productDetail.tongTien, 0, 'POINT', 0, 'COMMA')}">
+                                            $ 245.50
+                                        </td>
+                                    </tr>
+                                    <!-- end tr -->
+
+                                    <tr>
+                                        <th scope="row" colspan="5" class="text-end">
+                                            Tổng thanh toán sản phẩm
+                                        </th>
+                                        <td class="text-end"
+                                            th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}">
+                                            $732.50
+                                        </td>
+                                    </tr>
+                                    <!-- end tr -->
+                                    <tr>
+                                        <th scope="row" colspan="5" class="border-0 text-end">
+                                            Voucher :
+                                        </th>
+                                        <td class="border-0 text-end"
+                                            th:text="${#numbers.formatDecimal(billdetail.tienKhuyenMai, 0, 'POINT', 0, 'COMMA')}">
+                                            - $25.50
+                                        </td>
+                                    </tr>
+                                    <!-- end tr -->
+                                    <tr>
+                                        <th scope="row" colspan="5" class="border-0 text-end">
+                                            Phí ship :
+                                        </th>
+                                        <td class="border-0 text-end">30000</td>
+                                    </tr>
+                                    <!-- end tr -->
+
+                                    <!-- end tr -->
+                                    <tr>
+                                        <th scope="row" colspan="5" class="border-0 text-end">
+                                            Tổng thanh toán
+                                        </th>
+                                        <td class="border-0 text-end">
+                                            <h4 class="m-0 fw-semibold"
+                                                th:text="${#numbers.formatDecimal(total - billdetail.tienKhuyenMai, 0, 'POINT', 0, 'COMMA')}">
+                                                $739.00
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <!-- end tr -->
+                                    </tbody>
+                                    <!-- end tbody -->
+                                </table>
+                                <!-- end table -->
+                            </div>
+
+                            <div class="row d-print-none mt-4">
+                                <!-- Cột trái: Các nút cập nhật trạng thái -->
+                                <div class="col-md-8">
+                                    <div class="d-flex flex-column gap-2">
+                                        <!-- Các form xử lý trạng thái giữ nguyên vị trí bên trong -->
+                                        <form th:action="@{'/admin/update-bill-status/' + ${billdetail.maDonHang}}" method="get">
+                                            <input type="hidden" name="trangThaiDonHang" value="HUY"/>
+                                            <button type="button" class="cancel-btn btn btn-danger rounded"
+                                                    th:if="${billdetail.trangThaiDonHang != T(com.example.demo.entities.enumClass.BillStatus).CHO_HANG_VE &&
+                       billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_XAC_NHAN ||
+                       billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_LAY_HANG}">
+                                                <i class="far fa-times-circle"></i>&nbsp;Hủy đơn này
+                                            </button>
+                                        </form>
+
+                                        <form th:action="@{'/admin/update-bill-status/' + ${billdetail.maDonHang}}" method="get">
+                                            <div th:data-status="${billdetail.trangThaiDonHang}" class="btn-update-status"
+                                                 style="max-width: 100%"
+                                                 th:if="${billdetail.trangThaiDonHang != T(com.example.demo.entities.enumClass.BillStatus).HUY &&
+                     billdetail.trangThaiDonHang != T(com.example.demo.entities.enumClass.BillStatus).HOAN_THANH}">
+
+                                                <!-- Chờ xác nhận -->
+                                                <span class="btn btn-secondary text-wrap rounded"
+                                                      th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_XAC_NHAN}"
+                                                      data-status="CHO_XAC_NHAN"
+                                                      data-out-of-stock="${billdetail.isOutOfStock}">
+                        <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận, duyệt đơn này
+                    </span>
+
+                                                <!-- Chờ lấy hàng -->
+                                                <span class="btn btn-primary text-wrap rounded"
+                                                      th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_LAY_HANG}">
+                        <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận chuyển cho shipper
+                    </span>
+
+                                                <!-- Chờ hàng về -->
+                                                <span class="btn btn-warning text-wrap rounded"
+                                                      th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_HANG_VE}">
+                        <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận hàng đã về kho, duyệt đơn này
+                    </span>
+
+                                                <!-- Nút hủy cho trạng thái "Chờ hàng về" -->
+                                                <form th:action="@{'/admin/update-bill-status/' + ${billdetail.maDonHang}}" method="get">
+                                                    <input type="hidden" name="trangThaiDonHang" value="HUY"/>
+                                                    <button type="button" class="cancel-btn btn btn-danger rounded mt-2"
+                                                            th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_HANG_VE}">
+                                                        <i class="far fa-times-circle"></i>&nbsp; Hủy đơn này
+                                                    </button>
+                                                </form>
+
+                                                <!-- Chờ giao hàng -->
+                                                <span class="btn btn-success text-wrap rounded"
+                                                      th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_GIAO_HANG}">
+                        <i class="far fa-check-square"></i> Giao hàng thành công
+                    </span>
+
+                                                <!-- Giao hàng thất bại -->
+                                                <form th:action="@{'/admin/update-bill-status/' + ${billdetail.maDonHang}}" method="get">
+                                                    <input type="hidden" name="trangThaiDonHang" value="THAT_BAI"/>
+                                                    <button type="button" class="failed-btn btn btn-danger rounded mt-2"
+                                                            th:if="${billdetail.trangThaiDonHang == T(com.example.demo.entities.enumClass.BillStatus).CHO_GIAO_HANG}">
+                                                        <i class="far fa-times-circle"></i>&nbsp; Giao hàng thất bại
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Cột phải: Nút In và Đóng -->
+                                <div class="col-md-4 d-flex justify-content-end align-items-start">
+                                    <div class="float-end">
+                                        <a th:href="@{'/admin/export-pdf/'+${billdetail.maDonHang}}"
+                                           class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                        <a th:href="@{'/admin/bill-list'}">
+                                            <button type="button" class="btn btn-secondary w-md" data-dismiss="modal">
+                                                Đóng
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- end table responsive -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+    </div>
+
+    <script>
+        $(".cancel-btn").on("click", function (e) {
+            e.stopPropagation();
+            Swal.fire({
+                title: "Xác nhận?",
+                text: "Bạn chắc chắn muốn hủy đơn này, thao tác này không thể trở lại!",
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Hủy",
+                confirmButtonText: "Xác nhận",
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+
+        $(".failed-btn").on("click", function (e) {
+            e.stopPropagation();
+
+            Swal.fire({
+                title: "Xác nhận?",
+                text: "Đơn hàng chuyển sang trạng thái giao hàng thất bại",
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Hủy",
+                confirmButtonText: "Xác nhận",
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $(this).closest("form");
+                    form.find("input[name='trangThaiDonHang']").val("THAT_BAI");
+                    form.submit();
+                }
+            });
+        });
+
+        $(".btn-update-status").on("click", function (e) {
+            e.stopPropagation();
+            var currentStatus = $(this).attr("data-status");
+            var nextStatus;
+            var statusMessage;
+
+            switch (currentStatus) {
+                case "CHO_XAC_NHAN":
+                    nextStatus = "CHO_LAY_HANG";
+                    statusMessage = "Chờ lấy hàng";
+                    break;
+                case "CHO_LAY_HANG":
+                    nextStatus = "CHO_GIAO_HANG";
+                    statusMessage = "Chờ giao hàng";
+                    break;
+                case "CHO_GIAO_HANG":
+                    nextStatus = "HOAN_THANH";
+                    statusMessage = "Hoàn thành";
+                    break;
+                case "CHO_HANG_VE":
+                    nextStatus = "CHO_LAY_HANG";
+                    statusMessage = "Chờ lấy hàng";
+                    break;
+            }
+
+            Swal.fire({
+                title: "Xác nhận?",
+                text: "Xác nhận chuyển sang " + statusMessage, // Sử dụng dấu cộng để nối chuỗi
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Hủy",
+                confirmButtonText: "Xác nhận",
+                reverseButtons: true,
+            }).then((result) => {
+                debugger
+
+
+                if (result.isConfirmed) {
+                    let data = $('td[data-id]').map((index, item) => ({
+                        productDetailId: $(item).attr("data-id"),
+                        quantity: $(item).attr("data-quantity")
+                    })).get();
+                    fetch('/admin/api/bill-detail/check-bill', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (response.status === 200) {
+                                response.status // Trả về dữ liệu JSON nếu thành công
+                            } else {
+                                throw new Error(`HTTP error! status: ${response.status}`); // Nếu không phải 200, ném lỗi
+                            }
+                        })
+                        .then(result => {
+                            const form = $(".btn-update-status").closest("form");
+                            var url = form.attr("action") + "?trangThaiDonHang=" + nextStatus; // Nối chuỗi đúng cách
+                            window.location.href = url;
+                        })
+                        .catch(error => {
+                            alert("Không đủ số lượng");
+                            console.error('Error:', error.message); // Xử lý lỗi (lỗi HTTP hoặc lỗi mạng)
+                        });
+
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+
+</html>
