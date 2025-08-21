@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{fragments-admin::page_head('Admin page')}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <th:block layout:fragment="head_link"></th:block>
+    <style>
+        /* Font chữ chính cho toàn bộ trang */
+        body {
+            font-family: 'Roboto', sans-serif;
+            /*background-color: #0b0b0b; !* Màu nền nhẹ nhàng *!*/
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar với màu xanh lam nhẹ */
+        #left-panel {
+            background-color: #ececf6; /* Xanh lam đậm hơn một chút */
+            color: #ffffff;
+        }
+        #left-panel .navbar-brand,
+        #left-panel .menu-icon {
+            color: #FFFFFF;
+        }
+        #left-panel .nav > li > a {
+            padding: 15px 20px;
+            /*border-bottom: 1px solid #2c4b5a; !* Viền tối hơn *!*/
+            transition: background-color 0.3s ease;
+            /*color: #0b0b0b;*/
+        }
+        #left-panel .nav > li > a:hover {
+            /*background-color: #0b0b0b; !* Xanh lam đậm hơn khi hover *!*/
+        }
+        #left-panel .menu-title {
+            color: #d1e8f0;
+        }
+        #left-panel .sub-menu {
+            /*background-color: #0b0b0b;*/
+        }
+        #left-panel .sub-menu a {
+            /*color: #0b0b0b;*/
+        }
+        #left-panel .sub-menu a:hover {
+            /*background-color: #0b0b0b;*/
+        }
+        .custom-link-color a {
+            /*color: black; !* Thay đổi màu chữ thành đen cho các thẻ a bên trong div có lớp .custom-link-color *!*/
+        }
+        /* Header: nền sáng, chữ tối */
+        #header {
+            /*background-color: #0b0b0b;*/
+            border-bottom: 1px solid #dfe6e9;
+            padding: 10px 20px;
+        }
+        #header .menutoggle {
+            font-size: 20px;
+            /*color: #0b0b0b;*/
+        }
+
+        /* User Profile */
+        .user-area span {
+            /*color: #2d3436;*/
+        }
+        .user-avatar {
+            border: 2px solid #3a6073;
+        }
+        .user-menu {
+            background-color: #ffffff;
+            border: 1px solid #b2bec3;
+        }
+        .user-menu a {
+            /*color: #2d3436;*/
+        }
+        .user-menu a:hover {
+            background-color: #dfe6e9;
+        }
+
+        /* Content */
+        .content {
+            background-color: #ffffff;
+        }
+
+        /* Card sản phẩm */
+        .product-card {
+            background-color: #ffffff;
+            border: 1px solid #dfe6e9;
+        }
+        .product-card:hover {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .navbar-nav li a:hover {
+            background: #8B5E3B;
+            color: #4caf50;
+            transition: 0.3s;
+        }
+        .navbar-nav > li > a {
+            /* Hoặc một màu sáng khác */
+             /* Màu chữ */
+        }
+         .left-panel {
+             background-color: #f0f0f0;
+         }
+        .navbar-nav,
+        .menu {
+            list-style-type: none; /* Loại bỏ dấu chấm tròn */
+            padding: 0; /* Xóa khoảng cách bên trong danh sách */
+            margin: 0; /* Xóa khoảng cách bên ngoài danh sách */
+        }
+    </style>
+
+</head>
+<body>
+<aside id="left-panel" class="left-panel">
+    <nav class="navbar navbar-expand-sm navbar-default">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/" style="padding: 10px;">
+                <img th:src="@{/images/logo_1.png}" alt="Logo">
+            </a>
+            <a class="navbar-brand hidden" href="/">
+                <img th:src="@{/images/logo_1.png}" alt="Logo">
+            </a>
+        </div>
+        <div id="main-menu" class="main-menu collapse navbar-collapse">
+            <ul class="nav navbar-nav" custom-link-color>
+                <li class="active">
+                    <a th:href="@{/admin}" style="font-weight: bold; color: black;">
+                        <i class="fas fa-tachometer-alt"></i> <!-- Biểu tượng cho Trang Chủ -->
+                        Trang Chủ
+                    </a>
+                </li>
+                <li class="active">
+                    <a th:href="@{/admin/pos}" style="font-weight: bold; color: black;">
+                        <i class="fas fa-shopping-cart"></i> <!-- Biểu tượng cho Bán hàng tại cửa hàng -->
+                        Bán hàng tại cửa hàng
+                    </a>
+                </li>
+                <h3 class="menu-title">QUẢN LÝ</h3>
+                <ul class="menu">
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           style="font-weight: bold;">
+                            <i class="fas fa-box"></i> <!-- Biểu tượng cho Quản lý sản phẩm -->
+                            Quản lý sản phẩm
+                        </a>
+                        <ul class="sub-menu children dropdown-menu" style="background: #FFFFFF;">
+                            <li><a th:href="@{/admin/product-all}" style="font-weight: bold;"> <i class="fas fa-cube"></i> Sản phẩm</a></li>
+                            <li><a th:href="@{/admin/color-list}" style="font-weight: bold;"> <i class="fas fa-palette"></i> Màu sắc</a></li>
+                            <li><a th:href="@{/admin/material-all}" style="font-weight: bold;"> <i class="fas fa-th-large"></i> Chất liệu</a></li>
+                            <li><a th:href="@{/admin/size-all}" style="font-weight: bold;"> <i class="fas fa-ruler"></i> Kích cỡ</a></li>
+                            <li><a th:href="@{/admin/brand-all}" style="font-weight: bold;"> <i class="fas fa-tags"></i> Nhãn hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           style="font-weight: bold;">
+                            <i class="fas fa-gift"></i> <!-- Biểu tượng cho Quản lý khuyến mãi -->
+                            Quản lý khuyến mãi
+                        </a>
+                        <ul class="sub-menu children dropdown-menu" style="background: #FFFFFF;">
+                            <li><a th:href="@{/admin-only/discount-code}" style="font-weight: bold;"> <i class="fas fa-percent"></i> Mã giảm giá</a></li>
+                            <li><a th:href="@{/admin-only/product-discount}" style="font-weight: bold;"> <i class="fas fa-dollar-sign"></i> Giảm giá sản phẩm</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           style="color: black; font-weight: bold;">
+                            <i class="fas fa-chart-line"></i> <!-- Biểu tượng cho Thống kê -->
+                            Thống kê
+                        </a>
+                        <ul class="sub-menu children dropdown-menu" style="background: #FFFFFF;">
+                            <li><a th:href="@{/admin/thong-ke-san-pham}" style="font-weight: bold;"> <i class="fas fa-box-open"></i> Sản phẩm</a></li>
+                            <li><a th:href="@{/admin/bill-list}" style="font-weight: bold;"> <i class="fas fa-file-invoice"></i> Hóa đơn</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           style="font-weight: bold;">
+                            <i class="fas fa-users"></i> <!-- Biểu tượng cho Quản lý tài khoản -->
+                            Quản lý tài khoản
+                        </a>
+                        <ul class="sub-menu children dropdown-menu" style="background: #FFFFFF;">
+                            <li><a th:href="@{/admin-only/account-management}" style="font-weight: bold;"> <i class="fas fa-user-friends"></i> Tài Khoản ALL</a></li>
+                            <li><a th:href="@{/admin-only/account-employee}" style="font-weight: bold;"> <i class="fas fa-user-tie"></i> Nhân Viên</a></li>
+                            <li><a th:href="@{/admin-only/account-user}" style="font-weight: bold;"> <i class="fas fa-user"></i> Khách Hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <h3 class="menu-title">More</h3>
+
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           style="font-weight: bold;">
+                            <i class="fas fa-ellipsis-h"></i> <!-- Biểu tượng cho mục khác -->
+                            Khác
+                        </a>
+                        <ul class="sub-menu children dropdown-menu" style="background: #FFFFFF;">
+                            <li><a th:href="@{/user_logout}" style="font-weight: bold;"> <i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</aside>
+
+<div id="right-panel" class="right-panel">
+    <!-- Header -->
+    <header id="header" class="header" style="background: #fff">
+        <div class="col-sm-7">
+            <a id="menuToggle1" class="menutoggle pull-left1"></a>
+            <!--            <i class="fa-solid fa-thumbs-up"></i>-->
+        </div>
+        <div class="col-sm-5">
+            <div class="user-area dropdown float-right" style="margin-right: 10px">
+                <span sec:authentication="principal.username">abc@gmail.com</span>
+                <a class="dropdown-toggle" id="avatarToggle">
+                    <img class="user-avatar" src="https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-dark-gray-simple-avatar-png-image_3418404.jpg" alt="User Avatar">
+                </a>
+                <ul class="user-menu" id="userMenu" style="display: none;">
+                    <li><a class="nav-link" th:href="@{/}"><i class="fa fa-user"></i> Trang khách</a></li>
+                   <li> <a class="nav-link" th:href="@{/user_logout}"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="content p-4">
+        <div layout:fragment="content">
+            <!-- Nội dung trang quản trị -->
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments-admin::script}"></th:block>
+
+<script>
+    // dong mở avaver
+    document.addEventListener("DOMContentLoaded", function() {
+        // Lấy phần tử hình ảnh người dùng và menu
+        const avatarToggle = document.getElementById('avatarToggle');
+        const userMenu = document.getElementById('userMenu');
+
+        // Thiết lập sự kiện click cho hình ảnh người dùng
+        avatarToggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định
+            // Đảo ngược hiển thị menu
+            if (userMenu.style.display === "none" || userMenu.style.display === "") {
+                userMenu.style.display = "block";
+            } else {
+                userMenu.style.display = "none";
+            }
+        });
+    });
+    // Toggle menu khi nhấp vào avatar
+    document.querySelector('#avatarToggle').addEventListener('click', function (event) {
+        event.preventDefault();
+        document.querySelector('.user-menu').classList.toggle('active');
+    });
+    // Đóng menu khi nhấp ra ngoài
+    document.addEventListener('click', function(event) {
+        const isClickInsideUserArea = document.querySelector('.user-area').contains(event.target);
+        if (!isClickInsideUserArea) {
+            document.querySelector('.user-menu').classList.remove('active');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdowns = document.querySelectorAll('.dropdown-toggle');
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', function(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định
+
+                const subMenu = this.nextElementSibling; // Lấy <ul> ngay sau <a>
+
+                // Kiểm tra lớp active để hiện hoặc ẩn submenu
+                const isActive = subMenu.classList.contains('active');
+
+                // Ẩn tất cả các submenu trước khi hiện submenu hiện tại
+                document.querySelectorAll('.sub-menu').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelectorAll('li').forEach(li => {
+                        li.style.display = 'none'; // Ẩn tất cả mục con
+                    });
+                });
+
+                if (!isActive) {
+                    subMenu.classList.add('active');
+
+                    // Hiện lần lượt từng mục con
+                    const items = subMenu.querySelectorAll('li');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.display = 'block'; // Hiển thị từng mục con
+                        }, index * 100); // Thay đổi số millisecond này để điều chỉnh độ trễ
+                    });
+                }
+            });
+        });
+    });
+</script>
+<th:block layout:fragment="bottom_link"></th:block>
+</body>
+</html>
+
